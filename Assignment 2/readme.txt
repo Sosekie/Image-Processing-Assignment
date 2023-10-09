@@ -4,7 +4,7 @@
 
 # Link to My GitHub:
 
-https://github.com/Sosekie/Image-Processing-Assignment/tree/main/Assignment%202
+https://github.com/Sosekie/Image-Processing-Assignment/blob/main/Assignment%202/color%20table.ipynb
 
 # Description of My Algorithm:
 
