@@ -4,7 +4,7 @@
 
 # Link to My GitHub:
 
-https://github.com/Sosekie/Image-Processing-Assignment/tree/main/Assignment%201
+https://github.com/Sosekie/Image-Processing-Assignment/tree/main/Assignment%202
 
 # Description of My Algorithm:
 
