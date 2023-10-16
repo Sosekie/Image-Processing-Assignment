@@ -4,7 +4,7 @@
 
 # Link to My GitHub:
 
-https://github.com/Sosekie/Image-Processing-Assignment/blob/main/Assignment%303
+https://github.com/Sosekie/Image-Processing-Assignment/blob/main/Assignment%203/Image_processing_3.ipynb
 
 # Description of My Algorithm:
 
