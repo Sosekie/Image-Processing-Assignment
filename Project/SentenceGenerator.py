@@ -3,20 +3,6 @@ import os
 import random
 import numpy as np
 
-# ink generator
-def generate_ink_char(character_image):
-  copy_image = character_image.copy()
-  copy_image = copy_image.convert("RGBA")
-  datas = copy_image.getdata()
-  newData = []
-  for item in datas:
-      if item[0] == 0 and item[1] == 0 and item[2] == 0:
-        newData.append((0, 0, 0, 0))   # Make background transparent for non-character pixels
-      else:
-        newData.append((92, 64, 51, 255)) # Ink color for the character
-  copy_image.putdata(newData)
-  return copy_image
-
 # sentence generator below
 def load_images_for_sentence(sentence, image_dir):
     images = []
@@ -126,48 +112,9 @@ def transform_image(image):
     vertical_stretch_factor = random.uniform(0.98, 1.02)
     stretched_height = int(new_height * vertical_stretch_factor)
 
-    transformed_image = rotated_image.resize((new_width, stretched_height), Image.ANTIALIAS)
+    transformed_image = rotated_image.resize((new_width, stretched_height), Image.BICUBIC)
 
     return transformed_image
-
-def create_final_image(loaded_images, total_width, max_height, letter_spaces, word_spaces):
-    final_image = Image.new('RGB', (total_width, max_height), (0, 0, 0))
-    current_width = 0
-    word_length = 0
-    letter_position = []
-    word_coordinates = []
-    ink_chars = []
-    up_chars = []
-    letter_space_index = 0
-    word_space_index = 0
-
-    start_word = -1
-    end_word = -2
-
-    for char, image in loaded_images:
-        letter_position.append(current_width)
-        print('char: ', char)
-        if image:
-            image = transform_image(image)
-            bottom_offset = calculate_bottom_offset(char)
-            right_offset = calculate_right_offset(char)
-            ink_char  = generate_ink_char(image)
-            ink_chars.append(ink_char)
-            final_image.paste(image, (current_width, max_height - image.size[1] + bottom_offset))
-            current_width += image.size[0] + right_offset + letter_spaces[letter_space_index]
-            word_length += image.size[0] + right_offset + letter_spaces[letter_space_index]
-            letter_space_index += 1
-        else:
-            start_word = current_width - word_length
-            end_word = current_width
-            word_coordinates.append((start_word, end_word))
-            current_width += word_spaces[word_space_index]
-            word_length = 0
-            word_space_index += 1
-    # checks if the line ends with a space
-    if start_word == end_word:
-        word_coordinates.pop()
-    return final_image, letter_position, word_coordinates, ink_chars, up_chars
 
 def calculate_bottom_offset(char):
     bottom_offsets = {'f': -19, 'g': 0, 'p': -14, 'q': -14, 'j': -3, 'F': -13,
@@ -201,20 +148,3 @@ def make_black_transparent(image, shift_white_letter):
     new_img = Image.fromarray(data)
 
     return new_img
-
-# How to use it:
-
-# image_dir = '.Task3/Dictionary/'
-
-# # Put your latin sentence here:
-# sentence = "nomenq genusql"
-# # Hope our work will help more people.
-# sentence = "(christi); (prae),  (et). fafefsft. Spes Laboris Nostri Plus Potest Adiuvare Homines YYYYY."
-
-# loaded_images = load_images_for_sentence(sentence, image_dir)
-# total_width, max_height, letter_spaces, word_spaces = calculate_size(loaded_images)
-# final_image, letter_position = create_final_image(loaded_images, total_width, max_height, letter_spaces, word_spaces)
-# final_image = make_black_transparent(final_image, shift_white_letter=True) # choose shift white letter to black or not
-# final_image_path = os.path.join(image_dir, "final_sentence_image.png")
-# final_image.save(final_image_path)
-# print("Image created and saved to", final_image_path)
